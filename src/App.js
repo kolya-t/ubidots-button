@@ -14,6 +14,7 @@ class App extends Component {
     super(props);
 
     this.state = {
+      isLoaded: false,
       checked: false
     };
   }
@@ -23,7 +24,10 @@ class App extends Component {
       method: 'GET',
       url: '/variables/59e10131c03f973c4c22e002/values/'
     }).then(({data}) => {
-      this.setState({checked: data.results[0].value === 1})
+      this.setState({
+        isLoaded: true,
+        checked: data.results[0].value === 1
+      })
     })
   }
 
@@ -48,10 +52,12 @@ class App extends Component {
     return (
       <div className="App outer">
         <div className="middle">
-          <div className="inner">
-            <input id="checkbox" type="checkbox" checked={this.state.checked}/>
-            <label data-text-true="On" data-text-false="Off" onClick={this.onClick}><i></i></label>
-          </div>
+          {this.state.isLoaded ? (
+            <div className="inner">
+              <input id="checkbox" type="checkbox" checked={this.state.checked}/>
+              <label data-text-true="On" data-text-false="Off" onClick={this.onClick}><i></i></label>
+            </div>
+          ) : null}
         </div>
       </div>
     );
